@@ -3,12 +3,22 @@ const axios = require("axios");
 let Post = require("../models/post.model");
 
 router.get("/", async (req, res) => {
-  const response = await axios.get("http://jsonplaceholder.typicode.com/posts");
+  const response = await axios.get(
+    "http://jsonplaceholder.typicode.com/posts",
+    {
+      params: {
+        _limit: 20,
+      },
+    }
+  );
   res.json(response.data);
 });
 
 router.get("/search", async (req, res) => {
-  const response = await axios.get("http://jsonplaceholder.typicode.com/posts");
+  const response = await axios.get(
+    "http://jsonplaceholder.typicode.com/posts",
+    { params: { _limit: 20 } }
+  );
   const target = response.data.filter((post) =>
     post.title.includes(req.query.key)
   );

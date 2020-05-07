@@ -1,19 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <navbar></navbar>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import navbar from "./components/Navbar.vue";
+const axios = require("axios").default;
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  components: { navbar },
+
+  mounted() {
+    axios.get("http://localhost:5000/posts").then((response) => {
+      this.$store.commit("setPosts", response.data);
+    });
+    axios.get("http://localhost:5000/posts/favorite").then((response) => {
+      console.log(response.data);
+      this.$store.commit("setFavoritePosts", response.data);
+    });
+  },
+};
 </script>
 
 <style>
