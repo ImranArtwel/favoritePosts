@@ -17,12 +17,10 @@
         <div v-for="(post, index) in filteredPosts" :key="post.id">
           <div class="card post">
             <div class="card-header">
-              <a href="/posts/favorite" class="post-title">{{ post.title }}</a>
+              <a href="#" class="post-title">{{ post.title }}</a>
             </div>
 
-            <div class="card-body">
-              {{ post.body }}
-            </div>
+            <div class="card-body">{{ post.body }}</div>
           </div>
           <post-footer :post="post" :postIndex="index"></post-footer>
         </div>
@@ -37,7 +35,7 @@ export default {
   data() {
     return {
       search: "",
-      searchedPosts: [],
+      searchedPosts: []
     };
   },
   // watch: {
@@ -47,12 +45,15 @@ export default {
   // },
   computed: {
     posts() {
-      return this.$store.state.posts;
+      return this.$store.state.posts.map(post => ({
+        ...post,
+        isFavorite: false
+      }));
     },
     filteredPosts() {
       if (this.search == "") return this.posts;
       else return this.searchedPosts;
-    },
+    }
   },
   methods: {
     postSearch() {
@@ -64,12 +65,12 @@ export default {
       // });
       // this.searchedPosts = response.data
       if (this.search != "") {
-        this.searchedPosts = this.posts.filter((post) =>
+        this.searchedPosts = this.posts.filter(post =>
           post.title.includes(this.search.toLowerCase())
         );
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

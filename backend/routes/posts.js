@@ -53,7 +53,11 @@ router.post("/favorite", (req, res) => {
 
   favoritePost
     .save()
-    .then((post) => res.json({ msg: "Post added to favorites", post }))
+    .then(() => {
+      Post.find()
+        .then((posts) => res.json(posts))
+        .catch((err) => res.status(400).json("Error:" + err));
+    })
     .catch((err) => res.status(400).json("Error saving post"));
 });
 
@@ -82,9 +86,12 @@ router.get("/favorite/search", (req, res) => {
 
 //update post
 router.post("/favorite/update/", (req, res) => {
-  console.log(req.query.id);
-  Post.findByIdAndUpdate(req.query.id, { $set: req.body }, { new: true })
-    .then((post) => res.json({ msg: "Post updated", post }))
+  Post.findByIdAndUpdate(req.body.id, { $set: req.body }, { new: true })
+    .then(() => {
+      Post.find()
+        .then((posts) => res.json(posts))
+        .catch((err) => res.status(400).json("Error:" + err));
+    })
     .catch((err) => res.status(400).json(err));
 });
 

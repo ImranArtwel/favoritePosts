@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import navbar from "./components/Navbar.vue";
+import navbar from "./components/NavbarComponent.vue";
 const axios = require("axios").default;
 
 export default {
@@ -14,14 +14,13 @@ export default {
   components: { navbar },
 
   mounted() {
-    axios.get("http://localhost:5000/posts").then((response) => {
+    axios.get("http://localhost:5000/posts").then(response => {
       this.$store.commit("setPosts", response.data);
     });
-    axios.get("http://localhost:5000/posts/favorite").then((response) => {
-      console.log(response.data);
+    axios.get("http://localhost:5000/posts/favorite").then(response => {
       this.$store.commit("setFavoritePosts", response.data);
     });
-  },
+  }
 };
 </script>
 
