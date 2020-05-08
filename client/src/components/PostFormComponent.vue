@@ -21,6 +21,9 @@
       </div>
       <button type="submit" class="btn btn-primary" @click="createPost">Save</button>
     </form>
+    <div class="comment">
+      <span>Artwel</span>
+    </div>
   </div>
 </template>
 
@@ -84,5 +87,8 @@ export default {
 .postForm {
   padding: 50px;
 }
+.comment {
+  display: flex;
+  flex-direction: row;
+}
 </style>
-

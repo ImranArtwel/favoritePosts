@@ -5,6 +5,7 @@ const postSchema = new Schema({
   userId: { type: Number, required: true },
   title: { type: String, required: true },
   body: { type: String, required: true },
+  comments: { type: Array, default: "" },
 });
 
 const Post = mongoose.model("Post", postSchema);

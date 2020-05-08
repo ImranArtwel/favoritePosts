@@ -27,18 +27,6 @@ router.get("/search", async (req, res) => {
     return res.status(404).json("There are no posts that matches your search");
 });
 
-// router.get("/:id", async (req, res) => {
-//   try {
-//     const response = await axios.get(
-//       `http://jsonplaceholder.typicode.com/posts/${req.params.id}`
-//     );
-//     return res.json(response.data);
-//   } catch (error) {
-//     return res.status(400).json(`Post with id ${req.params.id} does not exist`);
-//   }
-// });
-
-//routes for favorite posts
 //create new favorite post
 router.post("/favorite", (req, res) => {
   const userId = Number(req.body.userId);
@@ -53,11 +41,7 @@ router.post("/favorite", (req, res) => {
 
   favoritePost
     .save()
-    .then(() => {
-      Post.find()
-        .then((posts) => res.json(posts))
-        .catch((err) => res.status(400).json("Error:" + err));
-    })
+    .then(() => retriveAllPosts(req, res))
     .catch((err) => res.status(400).json("Error saving post"));
 });
 
@@ -74,24 +58,16 @@ router.get("/favorite/search", (req, res) => {
     .catch((err) => res.status(400).json("Your search did not return results"));
 });
 
-//searching favorite post by id
-// router.get("/favorite/:id", (req, res) => {
-//   console.log(req);
-//   // Post.findById(req.params.id)
-//   //   .then((post) => res.json(post))
-//   //   .catch((err) =>
-//   //     res.status(400).json(`Post with id ${req.params.id} does not exist`)
-//   //   );
-// });
-
 //update post
-router.post("/favorite/update/", (req, res) => {
-  Post.findByIdAndUpdate(req.body.id, { $set: req.body }, { new: true })
-    .then(() => {
-      Post.find()
-        .then((posts) => res.json(posts))
-        .catch((err) => res.status(400).json("Error:" + err));
-    })
+router.post("/favorite/update/", async (req, res) => {
+  Post.findByIdAndUpdate(
+    req.body.id,
+    {
+      $set: req.body,
+    },
+    { new: true }
+  )
+    .then(() => retriveAllPosts(req, res))
     .catch((err) => res.status(400).json(err));
 });
 
@@ -102,11 +78,23 @@ router.delete("/favorite/", (req, res) => {
     .catch((err) => res.status(400).json(err));
 });
 
+router.get("/favorite/:id", (req, res) => {
+  let comments = [];
+  console.log(req.params.id);
+  Post.findById(req.params.id).then((post) => {
+    comments = post.comments;
+    return res.json(comments);
+  });
+});
 //retrieve all favorite posts
 router.get("/favorite", (req, res) => {
+  retriveAllPosts(req, res);
+});
+
+function retriveAllPosts(req, res) {
   Post.find()
     .then((posts) => res.json(posts))
     .catch((err) => res.status(400).json("Error:" + err));
-});
+}
 
 module.exports = router;
