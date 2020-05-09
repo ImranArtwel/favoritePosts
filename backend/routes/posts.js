@@ -32,11 +32,13 @@ router.post("/favorite", (req, res) => {
   const userId = Number(req.body.userId);
   const title = req.body.title;
   const body = req.body.body;
+  const comments = req.body.comments;
 
   const favoritePost = new Post({
     userId,
     title,
     body,
+    comments,
   });
 
   favoritePost

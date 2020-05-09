@@ -2,10 +2,9 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 const postSchema = new Schema({
-  userId: { type: Number, required: true },
   title: { type: String, required: true },
   body: { type: String, required: true },
-  comments: { type: Array, default: "" },
+  comments: { type: Array },
 });
 
 const Post = mongoose.model("Post", postSchema);

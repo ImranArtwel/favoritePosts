@@ -6,35 +6,32 @@
           <h3>Favourite Posts</h3>
         </div>
         <span class="btn btn-primary" style="margin-bottom:10px;">
-          <i class="fa fa-plus" aria-hidden="true" style="padding-right:3px;"></i>
           <router-link
             to="/posts/favorite/create-edit"
             class="routerlink"
             style="color:#fff;"
-          >Create New Post</router-link>
+            ><i
+              class="fa fa-plus"
+              aria-hidden="true"
+              style="padding-right:3px;"
+            ></i
+            >Create New Post</router-link
+          >
         </span>
 
         <div v-if="filteredPosts.length <= 0">
           <p>You have no favorite posts</p>
         </div>
-        <div v-else>
-          <input
-            v-model="search"
-            @keyup="postSearch"
-            type="text"
-            name="search"
-            placeholder="Search by post title"
-          />
-        </div>
         <div v-for="(post, index) in filteredPosts" :key="post.id">
           <div class="card post">
             <div class="card-header">
-              <a href="#" class="post-title">{{ post.title }}</a>
+              <span class="post-title">{{ post.title }}</span>
             </div>
 
             <div class="card-body">{{ post.body }}</div>
           </div>
           <post-footer :post="post" :postIndex="index"></post-footer>
+          <hr />
         </div>
       </div>
     </div>
@@ -48,7 +45,7 @@ export default {
   data() {
     return {
       search: "",
-      searchedPosts: []
+      searchedPosts: [],
     };
   },
   // watch: {
@@ -58,19 +55,19 @@ export default {
   // },
   computed: {
     posts() {
-      return this.$store.state.favoritePosts.map(post => ({
+      return this.$store.state.favoritePosts.map((post) => ({
         ...post,
-        isFavorite: true
+        isFavorite: true,
       }));
     },
     filteredPosts() {
       if (this.search == "") return this.posts;
       else return this.searchedPosts;
-    }
+    },
   },
   methods: {
     postSearch() {
-      // console.log(this.search);
+      console.log(this.search);
       // const response = await axios.get("http://localhost:5000/posts/search", {
       //   params: {
       //     key: this.search.toLowerCase(),
@@ -78,16 +75,12 @@ export default {
       // });
       // this.searchedPosts = response.data
       if (this.search != "") {
-        this.searchedPosts = this.posts.filter(post =>
+        this.searchedPosts = this.posts.filter((post) =>
           post.title.includes(this.search.toLowerCase())
         );
       }
-    }
+    },
   },
-  created() {
-    this.posts;
-    this.filteredPosts;
-  }
 };
 </script>
 <style scoped>

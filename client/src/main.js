@@ -9,14 +9,6 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 Vue.component(
-  "post-search",
-  require("./components/PostSearchComponent.vue").default
-);
-Vue.component(
-  "search-input",
-  require("./components/InputComponent.vue").default
-);
-Vue.component(
   "post-footer",
   require("./components/PostFooterComponent.vue").default
 );

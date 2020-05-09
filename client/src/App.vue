@@ -14,13 +14,13 @@ export default {
   components: { navbar },
 
   mounted() {
-    axios.get("http://localhost:5000/posts").then(response => {
+    axios.get("http://localhost:5000/posts").then((response) => {
       this.$store.commit("setPosts", response.data);
     });
-    axios.get("http://localhost:5000/posts/favorite").then(response => {
+    axios.get("http://localhost:5000/posts/favorite").then((response) => {
       this.$store.commit("setFavoritePosts", response.data);
     });
-  }
+  },
 };
 </script>
 

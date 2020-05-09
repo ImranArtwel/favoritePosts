@@ -12,6 +12,7 @@
             type="text"
             name="search"
             placeholder="Search by post title"
+            autocomplete="off"
           />
         </div>
         <div v-for="(post, index) in filteredPosts" :key="post.id">
@@ -29,48 +30,35 @@
   </div>
 </template>
 <script>
-//const axios = require("axios").default;
 export default {
   components: {},
   data() {
     return {
       search: "",
-      searchedPosts: []
+      searchedPosts: [],
     };
   },
-  // watch: {
-  //   search(value) {
-  //     console.log(value);
-  //   },
-  // },
   computed: {
     posts() {
-      return this.$store.state.posts.map(post => ({
+      return this.$store.state.posts.map((post) => ({
         ...post,
-        isFavorite: false
+        isFavorite: false,
       }));
     },
     filteredPosts() {
       if (this.search == "") return this.posts;
       else return this.searchedPosts;
-    }
+    },
   },
   methods: {
     postSearch() {
-      // console.log(this.search);
-      // const response = await axios.get("http://localhost:5000/posts/search", {
-      //   params: {
-      //     key: this.search.toLowerCase(),
-      //   },
-      // });
-      // this.searchedPosts = response.data
       if (this.search != "") {
-        this.searchedPosts = this.posts.filter(post =>
+        this.searchedPosts = this.posts.filter((post) =>
           post.title.includes(this.search.toLowerCase())
         );
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

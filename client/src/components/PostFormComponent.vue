@@ -8,6 +8,7 @@
           class="form-control"
           id="title"
           placeholder="Enter title"
+          autocomplete="off"
         />
       </div>
       <div class="form-group">
@@ -19,11 +20,10 @@
           placeholder="Write content here"
         ></textarea>
       </div>
-      <button type="submit" class="btn btn-primary" @click="createPost">Save</button>
+      <button type="submit" class="btn btn-primary" @click="createPost">
+        Save
+      </button>
     </form>
-    <div class="comment">
-      <span>Artwel</span>
-    </div>
   </div>
 </template>
 
@@ -34,53 +34,52 @@ export default {
     return {
       title: "",
       body: "",
-      editing: false
+      editing: false,
     };
   },
   computed: {
     selectedPost() {
       return this.$store.state.selectedPost;
-    }
+    },
   },
   methods: {
     async createPost() {
-      if (this.editing) this.updatePost();
+      if (this.editing === true) this.updatePost();
       else {
         const response = await axios.post(
           "http://localhost:5000/posts/favorite",
           {
-            userId: 50,
             title: this.title,
-            body: this.body
+            body: this.body,
           }
         );
         this.title = "";
         this.body = "";
         this.$store.commit("setFavoritePosts", response.data);
-        window.location.href = "/";
+        window.location.href = "/posts/favorite";
       }
     },
     async updatePost() {
-      let post = this.selectedPost;
-      console.log(post);
       const response = await axios.post(
         "http://localhost:5000/posts/favorite/update",
         {
           id: this.selectedPost._id,
           body: this.body,
-          title: this.title
+          title: this.title,
         }
       );
       this.$store.commit("setFavoritePosts", response.data);
       window.location.href = "/posts/favorite";
-    }
+    },
   },
   created() {
     this.title = this.selectedPost.title;
     this.body = this.selectedPost.body;
-    this.editing = this.title != "" ? true : false;
   },
-  mounted() {}
+  mounted() {
+    if (this.title) this.editing = true;
+    else this.editing = false;
+  },
 };
 </script>
 <style>
