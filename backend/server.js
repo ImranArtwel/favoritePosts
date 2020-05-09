@@ -19,9 +19,9 @@ connection.once("open", () => {
 });
 
 const postsRouter = require("./routes/posts");
-//const favoriteTodos = require("./routes/favoriteTodos");
+const usersRouter = require("./routes/users");
 app.use("/posts", postsRouter);
-//app.use("/favorite", favoriteTodos);
+app.use("/users", usersRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
