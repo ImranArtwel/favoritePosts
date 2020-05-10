@@ -26,16 +26,6 @@ const usersRouter = require("./routes/users");
 app.use("/posts", postsRouter);
 app.use("/users", usersRouter);
 
-// Serve static assets if in production
-if (process.env.NODE_ENV === "production") {
-  // Set static folder
-  app.use(express.static(__dirname + "/public"));
-
-  app.get(/.*/, (req, res) => {
-    res.sendFile(path.resolve(__dirname + "/public/index.html"));
-  });
-}
-
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
 });
