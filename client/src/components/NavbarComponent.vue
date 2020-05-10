@@ -17,14 +17,10 @@
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <router-link to="/" class="routerlink">Posts</router-link>
-            >
+            <router-link to="/" class="routerlink">Posts</router-link>>
           </li>
-          <li class="nav-item active">
-            <router-link to="/posts/favorite" class="routerlink"
-              >Favourite Posts</router-link
-            >
-            >
+          <li class="nav-item">
+            <router-link to="/posts/favorite" class="routerlink">Favourite Posts</router-link>>
           </li>
         </ul>
       </div>
@@ -36,5 +32,8 @@
 .routerlink {
   color: #fff;
   text-decoration: none;
+}
+ul > li {
+  padding: 10px;
 }
 </style>

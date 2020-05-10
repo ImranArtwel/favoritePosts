@@ -6,17 +6,9 @@
           <h3>Favourite Posts</h3>
         </div>
         <span class="btn btn-primary" style="margin-bottom:10px;">
-          <router-link
-            to="/posts/favorite/create-edit"
-            class="routerlink"
-            style="color:#fff;"
-            ><i
-              class="fa fa-plus"
-              aria-hidden="true"
-              style="padding-right:3px;"
-            ></i
-            >Create New Post</router-link
-          >
+          <router-link to="/posts/favorite/create-edit" class="routerlink" style="color:#fff;">
+            <i class="fa fa-plus" aria-hidden="true" style="padding-right:3px;"></i>Create New Post
+          </router-link>
         </span>
 
         <div v-if="filteredPosts.length <= 0">
@@ -38,49 +30,36 @@
   </div>
 </template>
 <script>
-//const axios = require("axios").default;
-
 export default {
   components: {},
   data() {
     return {
       search: "",
-      searchedPosts: [],
+      searchedPosts: []
     };
   },
-  // watch: {
-  //   search(value) {
-  //     console.log(value);
-  //   },
-  // },
+
   computed: {
     posts() {
-      return this.$store.state.favoritePosts.map((post) => ({
+      return this.$store.state.favoritePosts.map(post => ({
         ...post,
-        isFavorite: true,
+        isFavorite: true
       }));
     },
     filteredPosts() {
       if (this.search == "") return this.posts;
       else return this.searchedPosts;
-    },
+    }
   },
   methods: {
     postSearch() {
-      console.log(this.search);
-      // const response = await axios.get("http://localhost:5000/posts/search", {
-      //   params: {
-      //     key: this.search.toLowerCase(),
-      //   },
-      // });
-      // this.searchedPosts = response.data
       if (this.search != "") {
-        this.searchedPosts = this.posts.filter((post) =>
+        this.searchedPosts = this.posts.filter(post =>
           post.title.includes(this.search.toLowerCase())
         );
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

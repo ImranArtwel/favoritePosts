@@ -3,13 +3,11 @@
     <div class="postfooter">
       <div class="favorite">
         <span @click.prevent="updateFavorite">
-          <i
-            v-bind:class="[!post.isFavorite ? 'fa fa-heart-o' : 'fa fa-heart']"
-          ></i>
+          <i v-bind:class="[!post.isFavorite ? 'fa fa-heart-o' : 'fa fa-heart']"></i>
         </span>
         <span v-if="this.$parent.$options.name != 'posts'">
           <a @click.prevent="commentPost">
-            <i class="fa fa-comment" aria-hidden="true"></i>
+            <i class="fa fa-comment-o" aria-hidden="true"></i>
           </a>
         </span>
       </div>
@@ -23,21 +21,17 @@
       </div>
     </div>
     <div>
-      <h4 v-if="this.$parent.$options.name != 'posts'">Comments</h4>
+      <h4 v-if="this.$parent.$options.name != 'posts' && post.comments.length > 0">
+        Comments
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+      </h4>
       <div v-for="(comment, index) in post.comments" :key="index">
         <span class="comment" style="text-align:left;">{{ comment }}</span>
         <div style="margin-bottom: 5px;">
-          <button
-            class="btn btn-primary"
-            @click.prevent="editComment(comment, index)"
-          >
+          <button class="btn btn-primary" @click.prevent="editComment(comment, index)">
             <i class="fa fa-pencil-square" aria-hidden="true"></i>
           </button>
-          <button
-            class="btn btn-danger"
-            @click="deleteComment(index)"
-            style="margin-left: 5px;"
-          >
+          <button class="btn btn-danger" @click="deleteComment(index)" style="margin-left: 5px;">
             <i class="fa fa-trash" aria-hidden="true"></i>
           </button>
         </div>
@@ -50,20 +44,12 @@
           rows="3"
           placeholder="Write comment here"
         ></textarea>
-        <button
-          @click="saveComment"
-          class="btn btn-primary"
-          style="margin-top:5px;"
-        >
-          Save Comment
-        </button>
+        <button @click="saveComment" class="btn btn-primary" style="margin-top:5px;">Save Comment</button>
         <button
           @click="cancelComment"
           class="btn btn-secondary"
           style="margin-top:5px;margin-left:5px;"
-        >
-          Cancel
-        </button>
+        >Cancel</button>
       </div>
     </div>
   </div>
@@ -75,12 +61,12 @@ export default {
   props: {
     post: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     postIndex: {
       type: Number,
-      default: -1,
-    },
+      default: -1
+    }
   },
   data() {
     return {
@@ -88,21 +74,21 @@ export default {
       comment: "",
       isCommenting: false,
       commentEditing: "",
-      commentIndex: -1,
+      commentIndex: -1
     };
   },
   computed: {
     favoritePosts() {
       return this.$store.state.favoritePosts;
-    },
+    }
   },
   methods: {
     async deletePost() {
       this.$delete(this.favoritePosts, this.postIndex);
       await axios.delete("http://localhost:5000/posts/favorite", {
         params: {
-          id: this.post._id,
-        },
+          id: this.post._id
+        }
       });
     },
     updateFavorite() {
@@ -114,9 +100,9 @@ export default {
           .post("http://localhost:5000/posts/favorite", {
             userId: this.post.userId,
             title: this.post.title,
-            body: this.post.body,
+            body: this.post.body
           })
-          .then((response) => {
+          .then(response => {
             this.$store.commit("setFavoritePosts", response.data);
           });
         this.$forceUpdate();
@@ -142,9 +128,9 @@ export default {
       axios
         .post("http://localhost:5000/posts/favorite/update", {
           id: this.post._id,
-          comments: postComments,
+          comments: postComments
         })
-        .then((response) => {
+        .then(response => {
           this.$store.commit("setFavoritePosts", response.data);
         });
 
@@ -164,13 +150,13 @@ export default {
       axios
         .post("http://localhost:5000/posts/favorite/update", {
           id: this.post._id,
-          comments: this.post.comments,
+          comments: this.post.comments
         })
-        .then((response) => {
+        .then(response => {
           this.$store.commit("setFavoritePosts", response.data);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -180,7 +166,7 @@ comment-actions {
   justify-content: space-evenly;
 }
 .comment {
-  background-color: #ccc;
+  background-color: #34e5eb;
   padding: 5px;
   margin-bottom: 10px;
 }

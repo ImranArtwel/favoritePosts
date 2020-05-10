@@ -35,30 +35,30 @@ export default {
   data() {
     return {
       search: "",
-      searchedPosts: [],
+      searchedPosts: []
     };
   },
   computed: {
     posts() {
-      return this.$store.state.posts.map((post) => ({
+      return this.$store.state.posts.map(post => ({
         ...post,
-        isFavorite: false,
+        isFavorite: false
       }));
     },
     filteredPosts() {
       if (this.search == "") return this.posts;
       else return this.searchedPosts;
-    },
+    }
   },
   methods: {
     postSearch() {
       if (this.search != "") {
-        this.searchedPosts = this.posts.filter((post) =>
+        this.searchedPosts = this.posts.filter(post =>
           post.title.includes(this.search.toLowerCase())
         );
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

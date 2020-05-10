@@ -2,18 +2,20 @@ const router = require("express").Router();
 const axios = require("axios");
 let Post = require("../models/post.model");
 
+// retrieving posts from external data source
 router.get("/", async (req, res) => {
   const response = await axios.get(
     "http://jsonplaceholder.typicode.com/posts",
     {
       params: {
-        _limit: 20,
+        _limit: 20, // can remove params to retrieve all posts
       },
     }
   );
   res.json(response.data);
 });
 
+//search data source based on user supplied key (part/full post title )
 router.get("/search", async (req, res) => {
   const response = await axios.get(
     "http://jsonplaceholder.typicode.com/posts",
@@ -27,15 +29,17 @@ router.get("/search", async (req, res) => {
     return res.status(404).json("There are no posts that matches your search");
 });
 
+/*
+  Routes for favorite posts
+ */
+
 //create new favorite post
 router.post("/favorite", (req, res) => {
-  const userId = Number(req.body.userId);
   const title = req.body.title;
   const body = req.body.body;
   const comments = req.body.comments;
 
   const favoritePost = new Post({
-    userId,
     title,
     body,
     comments,
@@ -47,7 +51,7 @@ router.post("/favorite", (req, res) => {
     .catch((err) => res.status(400).json("Error saving post"));
 });
 
-//search post by title
+//search posts by title
 router.get("/favorite/search", (req, res) => {
   let posts = [];
   Post.find()
@@ -80,6 +84,7 @@ router.delete("/favorite/", (req, res) => {
     .catch((err) => res.status(400).json(err));
 });
 
+//retrieve post by id --> mainly for debugging
 router.get("/favorite/:id", (req, res) => {
   let comments = [];
   console.log(req.params.id);
@@ -88,11 +93,13 @@ router.get("/favorite/:id", (req, res) => {
     return res.json(comments);
   });
 });
+
 //retrieve all favorite posts
 router.get("/favorite", (req, res) => {
   retriveAllPosts(req, res);
 });
 
+// this is just a helper function for getting all posts
 function retriveAllPosts(req, res) {
   Post.find()
     .then((posts) => res.json(posts))

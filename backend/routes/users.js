@@ -26,7 +26,7 @@ router.post("/login", (req, res) => {
         if (result) res.json("Login successful");
       });
     })
-    .catch((err) => res.status(404).json("Authentication failed.."));
+    .catch((err) => res.status(400).json("Authentication failed.."));
 });
 
 module.exports = router;
