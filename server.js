@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const path = require("path");
 
 require("dotenv").config();
 
@@ -11,7 +12,10 @@ app.use(cors());
 app.use(express.json());
 
 const uri = process.env.ATLAS_URI;
-mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true });
+mongoose.connect(process.env.MONGODB_URI || uri, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+});
 const connection = mongoose.connection;
 connection.once("open", () => {
   console.log("MongoDB database connection established successfully");
@@ -21,6 +25,16 @@ const postsRouter = require("./routes/posts");
 const usersRouter = require("./routes/users");
 app.use("/posts", postsRouter);
 app.use("/users", usersRouter);
+
+// Serve static assets if in production
+if (process.env.NODE_ENV === "production") {
+  // Set static folder
+  app.use(express.static(__dirname + "/public"));
+
+  app.get(/.*/, (req, res) => {
+    res.sendFile(path.resolve(__dirname + "/public/index.html"));
+  });
+}
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`);
