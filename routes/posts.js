@@ -65,7 +65,7 @@ router.get("/favorite/search", (req, res) => {
 });
 
 //update post
-router.post("/favorite/update/", async (req, res) => {
+router.patch("/favorite/update/", async (req, res) => {
   Post.findByIdAndUpdate(
     req.body.id,
     {
