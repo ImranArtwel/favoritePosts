@@ -6,7 +6,7 @@
           <i v-bind:class="[!post.isFavorite ? 'fa fa-heart-o' : 'fa fa-heart']"></i>
         </span>
         <span v-if="this.$parent.$options.name != 'posts'">
-          <a @click.prevent="commentPost">
+          <a @click.prevent="$emit('commentPost')">
             <i class="fa fa-comment-o" aria-hidden="true"></i>
           </a>
         </span>
@@ -46,7 +46,7 @@
         ></textarea>
         <button @click="saveComment" class="btn btn-primary" style="margin-top:5px;">Save Comment</button>
         <button
-          @click="cancelComment"
+          @click="$emit('cancelComment')"
           class="btn btn-secondary"
           style="margin-top:5px;margin-left:5px;"
         >Cancel</button>
@@ -113,12 +113,7 @@ export default {
       this.$store.commit("setPost", this.post);
       this.$router.push("/posts/favorite/create-edit");
     },
-    commentPost() {
-      this.isCommenting = true;
-    },
-    cancelComment() {
-      this.isCommenting = false;
-    },
+
     saveComment() {
       let postComments = this.post.comments;
       if (this.commentEditing == true) {
@@ -126,8 +121,7 @@ export default {
       } else postComments.push(this.comment);
 
       axios
-        .post("http://localhost:5000/posts/favorite/update", {
-          id: this.post._id,
+        .patch("http://localhost:5000/posts/favorite/update/" + this.post._id, {
           comments: postComments
         })
         .then(response => {
@@ -148,14 +142,22 @@ export default {
     deleteComment(index) {
       this.$delete(this.post.comments, index);
       axios
-        .post("http://localhost:5000/posts/favorite/update", {
-          id: this.post._id,
+        .patch("http://localhost:5000/posts/favorite/update/" + this.post._id, {
           comments: this.post.comments
         })
         .then(response => {
           this.$store.commit("setFavoritePosts", response.data);
         });
     }
+  },
+  mounted() {
+    this.$on("commentPost", () => {
+      this.isCommenting = true;
+    });
+
+    this.$on("cancelComment", () => {
+      this.isCommenting = false;
+    });
   }
 };
 </script>

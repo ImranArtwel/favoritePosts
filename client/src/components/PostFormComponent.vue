@@ -58,10 +58,10 @@ export default {
       }
     },
     async updatePost() {
-      const response = await axios.post(
-        "http://localhost:5000/posts/favorite/update",
+      const response = await axios.patch(
+        "http://localhost:5000/posts/favorite/update/" + this.selectedPost._id,
         {
-          id: this.selectedPost._id,
+          //id: this.selectedPost._id,
           body: this.body,
           title: this.title
         }

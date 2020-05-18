@@ -53,7 +53,6 @@ router.post("/favorite", (req, res) => {
 
 //search posts by title
 router.get("/favorite/search", (req, res) => {
-  let posts = [];
   Post.find()
     .then((posts) => {
       let searchRes = posts.filter((post) =>
@@ -65,9 +64,9 @@ router.get("/favorite/search", (req, res) => {
 });
 
 //update post
-router.post("/favorite/update/", async (req, res) => {
+router.patch("/favorite/update/:id", (req, res) => {
   Post.findByIdAndUpdate(
-    req.body.id,
+    req.params.id,
     {
       $set: req.body,
     },
@@ -85,14 +84,11 @@ router.delete("/favorite/", (req, res) => {
 });
 
 //retrieve post by id --> mainly for debugging
-// router.get("/favorite/:id", (req, res) => {
-//   let comments = [];
-//   console.log(req.params.id);
-//   Post.findById(req.params.id).then((post) => {
-//     comments = post.comments;
-//     return res.json(comments);
-//   });
-// });
+router.get("/favorite/:id", (req, res) => {
+  Post.findById(req.params.id).then((post) => {
+    return res.json(post);
+  });
+});
 
 //retrieve all favorite posts
 router.get("/favorite", (req, res) => {
